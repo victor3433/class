@@ -46,16 +46,22 @@ A_point = LocationGlobalRelative (20.735513, -103.457498, 20)
 
 print("going to location A")
 drone.simple_goto(A_point)
-time.sleep(30)
+time.sleep(50)
+print("location reached")
 print("going to location B")
 
 drone.simple_goto(B_point)
 time.sleep(30)
 print("going to location C")
 
+print("location reached")
 drone.simple_goto(C_point)
-time.sleep(28)
+time.sleep(50)
 print("going home")
 
 drone.simple_goto(A_point)
 time.sleep(30)
+print("mission accomplished")
+
+vehicle.battery(20)
+print ("battery:", battery)
