@@ -1,5 +1,7 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time 
+import cv2
+import numpy as np
 
 def arm_and_takeoff(TargetAltitude):
 	print('Executing takeoff')
@@ -55,6 +57,7 @@ o = LocationGlobalRelative(20.736787, -103.454424, 3)
 p = LocationGlobalRelative(20.736787, -103.454356, 3)
 q = LocationGlobalRelative(20.736779, -103.454356, 3)
 r = LocationGlobalRelative(20.736779, -103.454420, 3)
+
 
 print('Going to point A')
 drone.simple_goto(a)
@@ -124,8 +127,63 @@ print('Going to point R')
 drone.simple_goto(r)
 time.sleep(10)
 
-print('Landing...')
-drone.mode = VehicleMode("RTL")
-print('mission accomplished')
+
+#open
+
+import cv2
+import numpy as np
+ 
+captura = cv2.VideoCapture(0)
+
+while(1):
+   _, imagen = captura.read()
+ 
+   hsv = cv2.cvtColor(imagen, cv2.COLOR_BGR2HSV)
+rojo_bajos = np.array([155,017,030])
+rojo_altos = np.array([254, 000, 000])
+moments = cv2.moments(mask)
+area = moments['m00']
+if(area > 2000000):
+   #Buscamos los centros
+   x = int(moments['m10']/moments['m00'])
+   y = int(moments['m01']/moments['m00'])
+ 
+   #Escribimos el valor de los centros
+   print "x = ", x
+   print "y = ", y
+ 
+   #Dibujamos el centro con un rectangulo
+   cv2.rectangle(imagen, (x, y), (x+2, y+2),(0,0,255), 2)
+
+cv2.imshow('mask', mask)
+cv2.imshow('Camara', imagen)
+#Se sale con ESC
+   tecla = cv2.waitKey(5) & 0xFF
+   if tecla == 27:
+      break
+ 
+if:
+include <Servo.h>
+
+	int pin = 9;
+	int pos = 0;
+
+	Servo servo;
+
+	void setup() {
+	  Serial.begin (9600);
+	  servo.attach(pin);
+	}
+
+	void loop() {
+	  if (pos == 0) {
+	    delay(1000);
+	  }
+	  pos = (pos+1) % 90;
+	  servo.write(pos);
+	  Serial.println(pos);
+	}
 
 
+
+cv2.destroyAllWindows()
